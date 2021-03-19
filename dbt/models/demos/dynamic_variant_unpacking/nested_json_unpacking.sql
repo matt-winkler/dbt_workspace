@@ -1,6 +1,13 @@
--- json sampled from https://opensource.adobe.com/Spry/samples/data_region/JSONDataSetSample.html
+select 
+    *, 
+    {{unpack_nested_json(ref('raw_json'), 'json')}} 
+    
+from {{ref('raw_json')}}
 
-select parse_json('
+
+
+{#
+
 {
 	"id": "0001",
 	"type": "donut",
@@ -28,4 +35,4 @@ select parse_json('
 		]
 }
 
-') as json
+#}
