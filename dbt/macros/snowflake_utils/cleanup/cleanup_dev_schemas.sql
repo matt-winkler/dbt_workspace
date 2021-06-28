@@ -8,13 +8,17 @@
       dbt run-operation cleanup_dev_schemas --args "{dry_run: False, schema_name_contains: 'randy', schema_name_does_not_contain: 'snowflake_meta'}"
     
 #}
-{% macro cleanup_dev_schemas(dry_run=True, schema_name_contains=None, schema_name_does_not_contain=None, database=target.database ) %}
+{% macro cleanup_dev_schemas(dry_run=True, schema_name_contains=None, schema_name_does_not_contain=None, database=target.database, role=None) %}
     {% if not (target.name == 'dev' or target.name == 'default') or not execute %}
       {{ return(None) }}
     {% endif %}
 
 
     {% set cleanup_query %}
+
+      {% if role %}
+        USE ROLE {{role}};
+      {% endif %}
 
       WITH 
       
@@ -27,10 +31,10 @@
         WHERE 
           SCHEMA_NAME NOT IN ('INFORMATION_SCHEMA', 'PUBLIC')
         {% if schema_name_contains %}
-          AND SCHEMA_NAME ILIKE '%{{schema_name_contains}}/%'
+          AND SCHEMA_NAME ILIKE '%{{schema_name_contains}}%'
         {% endif %}
         {% if schema_name_does_not_contain %}
-          AND NOT SCHEMA_NAME ILIKE '%{{schema_name_does_not_contain}}/%'
+          AND NOT SCHEMA_NAME ILIKE '%{{schema_name_does_not_contain}}%'
         {% endif %}
       )
 

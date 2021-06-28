@@ -2,7 +2,7 @@
 
 {{
     config(
-        unique_key = 'end_time',
+        unique_key = 'meter_id',
         strategy   = 'timestamp',
         updated_at = 'end_time'
     )
