@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: hard_deletes__augmented_snapshot_view
+    docs:
+        show: "{{var('show_snapshot_docs')}}"
+  - name: hard_deletes__snapshot_passthrough
+    docs:
+        show: "{{var('show_snapshot_docs')}}"
+  - name: hard_deletes_source
+    docs:
+        show: "{{var('show_snapshot_docs')}}"
+      
