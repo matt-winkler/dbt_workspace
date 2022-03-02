@@ -1,6 +1,11 @@
 version: 2
 
 sources:
+  - name: source_with_vars
+    database: raw_{{env_var('DBT_DATABASE_LIFECYCLE_SUFFIX_3', '')}}
+    schema: test_schema
+    tables:
+      - name: test_table
   - name: tpch
     database: raw
     schema: tpch_sf001
