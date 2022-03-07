@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: source_with_vars
-    database: raw_{{env_var('DBT_DATABASE_LIFECYCLE_SUFFIX_3', '')}}
+    database: raw_{{env_var('DBT_DATABASE_LIFECYCLE_SUFFIX_3', 'default_value')}}
     schema: test_schema
     tables:
       - name: test_table
