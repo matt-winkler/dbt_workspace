@@ -4,6 +4,8 @@ with source as (
 
 ),
 
+-- test adding a comment to line items
+
 renamed as (
 
     select
