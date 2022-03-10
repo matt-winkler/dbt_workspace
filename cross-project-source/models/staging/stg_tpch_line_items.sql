@@ -4,7 +4,7 @@ with source as (
 
 ),
 
--- test adding a comment to line items
+-- comment made directly on master!!!
 
 renamed as (
 
