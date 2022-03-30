@@ -1,0 +1,19 @@
+version: 2
+
+metrics:
+  - name: orders_over_time
+    label: Order counts over time
+    model: ref('orders_data')
+    description: "The sum of orders over time"
+
+    type: sum
+    sql: amount # superfluous here, but shown as an example
+
+    timestamp: order_date
+    time_grains: [day, week, month]
+
+    dimensions:
+      - product_status
+      - location
+
+    meta: {team: Finance}
