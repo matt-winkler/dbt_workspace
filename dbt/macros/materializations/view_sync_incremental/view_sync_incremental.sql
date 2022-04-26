@@ -83,11 +83,13 @@
   {%- endcall -%}
 
   {% do run_query(delete_sql) %}
-  {% do drop_relation_if_exists(load_relation(tmp_relation)) %}
 
   {{ run_hooks(post_hooks) }}
 
   {% set target_relation = target_relation.incorporate(type='table') %}
+  {% set tmp_relation = tmp_relation.incorporate(type='view') %}
+  {% do adapter.drop_relation(tmp_relation) %}
+
   {% do persist_docs(target_relation, model) %}
 
   {% do unset_query_tag(original_query_tag) %}
