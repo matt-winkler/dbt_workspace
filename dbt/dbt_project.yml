@@ -2,7 +2,7 @@ name: 'secret'
 version: '1.0.0'
 config-version: 2
 
-profile: default
+profile: snowflake
 
 vars:
   my_cool_var: '2016-06-01'
@@ -11,6 +11,7 @@ vars:
 # on-run-start: 'CALL {{stored_proc__pi()}}();'
 
 models:
+    
   secret:
     +persist_docs:
       relation: True
@@ -25,10 +26,13 @@ models:
 
     demos:
       custom_schema:
+        +schema: default
         team_a:
-          +schema: team_a
+          +schema: "{{env_var('DBT_ENV_TEAM_A_SCHEMA', 'team_a')}}"
         team_b:
-          +schema: team_b
+          +schema: "{{env_var('DBT_ENV_TEAM_B_SCHEMA', 'team_b')}}"
+        team_c:
+          +schema: "{{env_var('DBT_ENV_TEAM_C_SCHEMA', 'team_c')}}"
         # +schema:       custom_schema  
         #+materialized: table  
       netflix:

@@ -1,0 +1,27 @@
+
+version: 2
+
+sources:
+  - name: team_a_data
+    # could do the same with the database as you could for the schema
+    database: ANALYTICS_MWINKLER_DBT_WORKSPACE
+    
+    # could also use environment variables instead of the jinja mapping on targets
+    schema: "{{'dev' if target.name.lower() in ['local', 'dev'] else 'prod' }}\
+             _{{env_var('DBT_ENV_TEAM_A_SCHEMA', 'team_a')}}"
+    tables:
+      - name: team_a_model
+        tags: 
+          - source_method
+  
+  - name: team_b_data
+    # could do the same with the database as you could for the schema
+    database: ANALYTICS_MWINKLER_DBT_WORKSPACE
+    
+    # could also use environment variables instead of the jinja mapping on targets
+    schema: "{{'dev' if target.name.lower() in ['local', 'dev'] else 'prod' }}\
+             _{{env_var('DBT_ENV_TEAM_B_SCHEMA', 'team_b')}}"
+    tables:
+      - name: team_b_model_source
+        tags: 
+          - source_method
