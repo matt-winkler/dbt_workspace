@@ -6,7 +6,7 @@
     Invalid incremental strategy provided: {{ strategy }}
     Expected 'merge'
   {%- endset %}
-  {% if strategy not in ['merge'] %}
+  {% if strategy not in ['insert_overwrite'] %}
     {% do exceptions.raise_compiler_error(invalid_strategy_msg) %}
   {% endif %}
 
@@ -14,15 +14,15 @@
 {% endmacro %}
 
 {% macro dbt_snowflake_get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
-  {% if strategy == 'merge' %}
-    {% do return(get_merge_sql(target_relation, tmp_relation, unique_key, dest_columns)) %}
+  {% if strategy == 'insert_overwrite' %}
+    {% do return(view_sync_get_merge_sql(target_relation, tmp_relation, unique_key, dest_columns, predicates=none)) %}
   {% else %}
     {% do exceptions.raise_compiler_error('invalid strategy: ' ~ strategy) %}
   {% endif %}
 {% endmacro %}
 
 {% macro dbt_snowflake_view_sync_create_temp_relation(strategy, tmp_relation, sql) %}
-  {% if strategy == 'merge' %}
+  {% if strategy == 'insert_overwrite' %}
     {% do return(create_view_as(tmp_relation, sql)) %}
   {% else %}
     {% do exceptions.raise_compiler_error('invalid strategy: ' ~ strategy) %}
@@ -82,7 +82,7 @@
     {{ build_sql }}
   {%- endcall -%}
 
-  {% do run_query(delete_sql) %}
+  {#-- do run_query(delete_sql) #}
 
   {{ run_hooks(post_hooks) }}
 
