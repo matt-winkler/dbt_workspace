@@ -29,12 +29,6 @@
   {% endif %}
 {% endmacro %}
 
-{% macro dbt_snowflake_view_sync_remove_deleted_ids(tmp_relation, target_relation, unique_key) %}
-   
-    delete from {{ target_relation }} where {{ unique_key }} not in (select {{ unique_key }} from {{ tmp_relation }} );
-
-{% endmacro %}
-
 {% materialization view_sync_incremental, adapter='snowflake' -%}
 
   {% set original_query_tag = set_query_tag() %}
@@ -75,14 +69,12 @@
       {% set dest_columns = adapter.get_columns_in_relation(existing_relation) %}
     {% endif %}
     {% set build_sql = dbt_snowflake_get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
-    {% set delete_sql = dbt_snowflake_view_sync_remove_deleted_ids(tmp_relation, target_relation, unique_key) %}
   {% endif %}
 
   {%- call statement('main') -%}
     {{ build_sql }}
   {%- endcall -%}
 
-  {#-- do run_query(delete_sql) #}
 
   {{ run_hooks(post_hooks) }}
 

@@ -14,21 +14,9 @@
     {%- set sql_header = config.get('sql_header', none) -%}
 
     {%- set dml -%}
-    {%- if unique_key is none -%}
-
-        {{ sql_header if sql_header is not none }}
-
-        insert into {{ target }} ({{ dest_cols_csv }})
-        (
-            select {{ dest_cols_csv }}
-            from {{ source_sql }}
-        )
-
-    {%- else -%}
 
         {{ view_sync_get_sql(target, source_sql, unique_key, dest_columns, predicates) }}
 
-    {%- endif -%}
     {%- endset -%}
 
     {% do return(snowflake_dml_explicit_transaction(dml)) %}
@@ -37,16 +25,13 @@
 
 
 {% macro view_sync_get_sql(target, source, unique_key, dest_columns, predicates) -%}
-    {%- set predicates = [] if predicates is none else [] + predicates -%}
+    {#- set predicates = [] if predicates is none else [] + predicates -#}
     {%- set dest_cols_csv = get_quoted_csv(dest_columns | map(attribute="name")) -%}
-    {%- set update_columns = config.get('merge_update_columns', default = dest_columns | map(attribute="quoted") | list) -%}
     {%- set sql_header = config.get('sql_header', none) -%}
-
 
     {{ sql_header if sql_header is not none }}
     
-
-    insert overwrite into {{ target }}
-      select * from {{ source }}
+    insert overwrite into {{ target }} ( {{ dest_cols_csv }} )
+      select {{ dest_cols_csv }} from {{ source }}
 
 {% endmacro %}
