@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: test1
+    database: raw1
+    schema: s1
+    tables:
+      - name: t1
+  - name: test2
+    database: raw2
+    schema: s2
+    tables:
+      - name: t2
