@@ -14,7 +14,7 @@
   {% do return(strategy) %}
 {% endmacro %}
 
-{% macro dbt_snowflake_get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
+{% macro get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
   {% if strategy == 'merge' %}
     {% do return(get_merge_sql(target_relation, tmp_relation, unique_key, dest_columns)) %}
   {% elif strategy == 'delete+insert' %}
@@ -29,7 +29,7 @@
 {% macro incremental_validate_delete_target_not_in_source(delete_target_not_in_source, strategy, unique_key, default) %}
    
    {% if not delete_target_not_in_source %}
-      {{ return(False) }}
+      {{ return(default) }}
    {% elif delete_target_not_in_source and strategy not in ['merge', 'delete+insert'] %}
       {% do exceptions.raise_compiler_error('invalid strategy for delete_target_not_in_source, must be one of: [merge, delete+insert]') %}
    {% elif delete_target_not_in_source and not unique_key %}
@@ -88,11 +88,9 @@
            from_relation=tmp_relation,
            to_relation=target_relation) %}
     {#-- Process schema changes. Returns dict of changes if successful. Use source columns for upserting/merging --#}
-    {% set dest_columns = process_schema_changes(on_schema_change, tmp_relation, existing_relation) %}
-    {% if not dest_columns %}
-      {% set dest_columns = adapter.get_columns_in_relation(existing_relation) %}
-    {% endif %}
-    {% set build_sql = dbt_snowflake_get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
+    {% do process_schema_changes(on_schema_change, tmp_relation, existing_relation) %}
+    {% set dest_columns = adapter.get_columns_in_relation(existing_relation) %}
+    {% set build_sql = get_incremental_sql(strategy, tmp_relation, target_relation, unique_key, dest_columns) %}
     {% set delete_sql = delete_from_target_not_in_source(tmp_relation, target_relation, unique_key) %}
   {% endif %}
 
