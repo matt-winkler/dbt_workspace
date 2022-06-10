@@ -1,3 +1,5 @@
+{# -- usage: dbt run-operation backfill --args '{"node_name":"backfill_model", "date_column_name": "o_orderdate", "target_table": "test", "start_date": "2020-01-01", "end_date": "2021-02-02"}' #}
+
 {% macro backfill(node_name, date_column_name, target_table, start_date, end_date, backfill_interval=7) %}
    
    {% set log_msg %}
