@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: test
+    database: mw_test_db
+    schema: mw_test_schema
+    tables:
+      - name: t1
+      - name: t2
