@@ -10,6 +10,8 @@ vars:
 
 # on-run-start: 'CALL {{stored_proc__pi()}}();'
 
+seed-paths: ['data']
+
 models:
   secret:
     +persist_docs:
@@ -53,9 +55,13 @@ seeds:
       +schema: jaffle
       +tags: ['jaffle']
     zodiac:
-      +enabled: True
+      +enabled: False
       +schema: zodiac
       +tags: ['zodiac']
+    merge_update_columns:
+      +enabled: True
+      +schema: merge_update_columns_demo
+      +tags: ['merge_demo_assets']
 
 
 snapshots:

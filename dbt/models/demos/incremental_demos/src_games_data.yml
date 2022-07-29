@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: games
+    database: ANALYTICS_MWINKLER_DBT_WORKSPACE
+    schema: dbt_mwinkler__merge_update_columns_demo
+    tables:
+      - name: raw_games_data
