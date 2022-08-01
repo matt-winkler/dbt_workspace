@@ -7,6 +7,15 @@ profile: default
 vars:
   my_cool_var: '2016-06-01'
   snowflake_meta_src_db: 'snowflake' # override this with -> dbt run --vars "'snowflake_meta_src_db': 'my_snowflake_meta_src_db'"
+  game_version_column_mappings:
+    default_id:
+      default_version: ['description', 'has_aliens', 'has_sports']
+    1:
+      'v1': ['description', 'has_sports']
+      'v2': ['description', 'has_sports']
+    2: 
+      'v1': ['description', 'has_aliens']
+      'v2': ['description', 'has_aliens']
 
 # on-run-start: 'CALL {{stored_proc__pi()}}();'
 

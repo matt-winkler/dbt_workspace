@@ -1,6 +1,6 @@
 id,version,title,description,has_aliens,has_sports
-1,v1,Madden 2021,football,0,1
-1,v2,Madden 2022,football,0,1
-2,v1,Star Wars Jedi: Fallen Order,galaxy far far away,1,0
-2,v2,Star Wars Squadrons,galaxy far far away,1,1
+1,v1,Madden 2021,football,,1
+1,v2,Madden 2022,football,,1
+2,v1,Star Wars Jedi: Fallen Order,galaxy far far away,1,
+2,v2,Star Wars Squadrons,galaxy far far away,1,
 3,v1,NHL 2021,hockey,0,1
