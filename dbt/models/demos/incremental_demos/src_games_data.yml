@@ -6,3 +6,5 @@ sources:
     schema: dbt_mwinkler__merge_update_columns_demo
     tables:
       - name: raw_games_data
+      - name: game_metadata
+      - name: game_telemetry

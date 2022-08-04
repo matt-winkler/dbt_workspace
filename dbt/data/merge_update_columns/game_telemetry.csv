@@ -1,3 +1,10 @@
 event_name,event_type,event_params,game_id,hour,dt
-transaction,server blaze,'{"asset_in": {"items": {"consumable": ["item_id": 3709, "quantity": 1, "name": "black"]}}}',1,hh,dt --goes into transaction fact
-load out,server blaze,'{"right_item_id": 100, "left_item_id": 200}',1,hh,dt -- goes into load out fact
+-- first two records are "well formed" from Fifa 2020
+transaction,server_blaze,"{'asset_in': {'items': {'consumable': {'item_id': 3709, 'quantity': 1, 'name': 'black'}}}, 'asset_out': {'items': {'consumable': {'item_id': 3710, 'quantity': 2, 'name': 'green'}}}",1,00,2022-01-01
+transaction,server_blaze,"{'asset_in': {'items': {'consumable': {'item_id': 3710, 'quantity': 2, 'name': 'green'}}}, 'asset_out': {'items': {'consumable': {'item_id': 3709, 'quantity': 1, 'name': 'black'}}}",1,00,2022-01-01
+-- third record is "malformed" from Fifa 2021 because game makers stopped sending the "reverse" of the event in two-player exchanges
+
+transaction,server_blaze,"{'asset_in': {'items': {'consumable': {'item_id': 3709, 'quantity': 2, 'name': 'yellow'}}}, 'asset_out': {'items': {'consumable': {'item_id': 3710, 'quantity': 4, 'name': 'orange'}}}",1,00,2022-01-01
+transaction,server_blaze,"{'asset_in': {'items': {'consumable': {'item_id': 3709, 'amount': 1, 'name': 'black'}}}}",1,00,2022-06-01
+load_out,server_blaze,"{'right_item_id': 100, 'left_item_id': 200}",1,01,2022-01-01
+login

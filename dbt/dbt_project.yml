@@ -11,7 +11,7 @@ vars:
     default_id:
       default_version: ['description', 'has_aliens', 'has_sports']
     1:
-      'v1': ['description', 'has_sports']
+      'v1': ['game_id', 'event_type', 'dt', 'hour', 'amount', 'item_key']
       'v2': ['description', 'has_sports']
     2: 
       'v1': ['description', 'has_aliens']
@@ -51,6 +51,9 @@ models:
 
 sources:
   secret:
+    demos:
+      source_overrides:
+        database: 'default'
     snowflake_meta:
       +tags: ['snowflake_meta']
 

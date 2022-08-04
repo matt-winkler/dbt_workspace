@@ -1,0 +1,18 @@
+version: 2 
+
+sources:
+  - name: src_override_test__target
+    schema: my_schema
+    database: '{{"default" if target.name == "dev" else target.database}}'
+    tables:
+      - name: t1
+  - name: src_override_test__env_var
+    schema: my_schema
+    database: '{{env_var("src_database", "default")}}'
+    tables:
+      - name: t1
+  - name: src_override_test__var
+    schema: my_schema
+    database: '{{var("src_database", "default")}}'
+    tables:
+      - name: t1
