@@ -1,0 +1,3 @@
+event_name,event_type,event_params,game_id,hour,dt
+transaction,server blaze,'{"asset_in": {"items": {"consumable": ["item_id": 3709, "quantity": 1, "name": "black"]}}}',1,hh,dt --goes into transaction fact
+load out,server blaze,'{"right_item_id": 100, "left_item_id": 200}',1,hh,dt -- goes into load out fact

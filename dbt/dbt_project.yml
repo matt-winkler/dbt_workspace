@@ -9,8 +9,19 @@ vars:
   load_type: 'I'
   my_cool_var: '2016-06-01'
   snowflake_meta_src_db: 'snowflake' # override this with -> dbt run --vars "'snowflake_meta_src_db': 'my_snowflake_meta_src_db'"
+  game_version_column_mappings:
+    default_id:
+      default_version: ['description', 'has_aliens', 'has_sports']
+    1:
+      'v1': ['description', 'has_sports']
+      'v2': ['description', 'has_sports']
+    2: 
+      'v1': ['description', 'has_aliens']
+      'v2': ['description', 'has_aliens']
 
 # on-run-start: 'CALL {{stored_proc__pi()}}();'
+
+seed-paths: ['data']
 
 models:
   secret:
@@ -31,13 +42,14 @@ models:
         +materialized: table  
       netflix:
         +tags:    netflix
-        # +schema:  netflix
-        +enabled: False
+        +enabled: True
       easy_incremental:
         +watermark:    watermark
         +materialized: easy_incremental
       hard_deletes:
         +enabled: True
+      enforce_limit:
+        +post-hook: "{{validate_sql_contains_limit(model)}}"
 
 sources:
   secret:
@@ -53,6 +65,14 @@ seeds:
     jaffle_shop:
       +schema: jaffle
       +tags: ['jaffle']
+    zodiac:
+      +enabled: False
+      +schema: zodiac
+      +tags: ['zodiac']
+    merge_update_columns:
+      +enabled: True
+      +schema: merge_update_columns_demo
+      +tags: ['merge_demo_assets']
 
 
 snapshots:
