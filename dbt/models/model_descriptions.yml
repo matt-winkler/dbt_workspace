@@ -7,3 +7,5 @@ models:
     columns:
       - name: col
         description: "STRING - column for the first model"
+        tests:
+          - unique
