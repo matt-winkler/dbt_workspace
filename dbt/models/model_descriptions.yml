@@ -1,5 +1,17 @@
 version: 2
 
+sources:
+  - name: testsource
+    database: ANALYTICS_MWINKLER_DBT_WORKSPACE
+    schema: dbt_mwinkler
+    tables:
+      - name: sourcewithdate
+        freshness:
+          warn_after:
+            count: 1
+            period: day
+        loaded_at_field: dt::timestamp
+
 models:
   - name: my_first_model
     description: this is my first model 
