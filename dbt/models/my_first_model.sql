@@ -5,6 +5,6 @@
 }}
 
 
-select 'hello, world!' as col, fail as something
+select 'hello, world!' as col
 union all
 select 'hello, world!' as col
