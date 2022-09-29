@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: test
+    database: ANALYTICS_MWINKLER_DBT_WORKSPACE
+    schema: dbt_mwinkler
+    tables:
+      - name: camel_case_test
+        columns:
+          - name: "OrderStatus"
+            quote: true
+            tests:
+              - accepted_values:
+                  values: ['placed', 'shipped', 'completed']

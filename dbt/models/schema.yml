@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: my_first_model
+    tests:
+      - data_type_validation

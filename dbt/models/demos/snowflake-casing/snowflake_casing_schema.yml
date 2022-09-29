@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: camelCaseModelB
+    columns: 
+      - name: '"OrderStatus"'
+        tests:
+          - unique
+          - not_null
+  - name: orderStatus
+    columns:
+      - name: '"OrderStatus"'
+        tests:
+          - relationships:
+              to: ref('camelCaseModelB')
+              field: '"OrderStatus"'

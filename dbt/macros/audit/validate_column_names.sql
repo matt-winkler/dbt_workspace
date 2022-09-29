@@ -1,7 +1,6 @@
 {% macro validate_column_names(model) %}
-  {% if not execute %}
-      {{ return(None) }}
-  {% endif %}
+  {# if not execute {{ return(None) }} #}
+  {# endif #}
 
   {% set cols = get_column_names(model) %}
   
