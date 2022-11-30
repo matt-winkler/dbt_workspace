@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: model_with_failures
+    columns:
+      - name: id
+        tests:
+          - unique:
+              config:
+                severity: warn
