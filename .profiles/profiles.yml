@@ -1,0 +1,15 @@
+snowflake:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('DBT_ACCOUNT') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PW') }}"
+
+      role: TRANSFORMER
+      database: ANALYTICS_MWINKLER_DBT_WORKSPACE
+      warehouse: TRANSFORMING
+      schema: dbt_mwinkler
+      threads: 2
+      client_session_keep_alive: False

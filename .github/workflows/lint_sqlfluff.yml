@@ -5,6 +5,11 @@ name: SQLFluff
 on:
   - pull_request
 
+env:
+  DBT_USER: "${{ secrets.DBT_USER }}"
+  DBT_PW: "${{ secrets.DBT_PW }}"
+  DBT_ACCOUNT: "${{ secrets.DBT_ACCOUNT }}"
+
 jobs:
   lint-models:
     runs-on: ubuntu-latest
