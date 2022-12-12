@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: ds_test
+    database: dev
+    schema: dbt_mwinkler
+    tables:
+      - name: titantic
