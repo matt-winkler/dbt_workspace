@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: model_a
+    meta:
+      node_color: "#CB998F"

@@ -5,6 +5,6 @@
     )
 }}
 
-select 'hello, world!' as col, 'test' as "CamelCase.Col"
+select 'hello, world!' as col
 union all
-select 'hello, world!' as col, 'test2' as "CamelCase.Col"
+select 'hello, world!' as col

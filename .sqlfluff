@@ -1,13 +1,8 @@
 [sqlfluff]
-templater = dbt
+templater = jinja
 verbose = 1
+dialect = snowflake
 exclude_rules = L009,L027
-
-[sqlfluff:templater:dbt]
-project_dir = dbt
-profiles_dir = .profiles
-profile = snowflake
-target = dev
 
 [sqlfluff:templater:jinja]
 apply_dbt_builtins = True
