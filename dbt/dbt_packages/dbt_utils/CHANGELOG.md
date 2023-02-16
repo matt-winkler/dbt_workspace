@@ -8,6 +8,91 @@
 ## Contributors:
 --->
 
+# dbt utils v1.0
+
+## Migration Guide 
+The full migration guide is at https://docs.getdbt.com/guides/migration/versions/upgrading-to-dbt-utils-v1.0 
+
+## New features
+- New macro `get_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
+- New macro safe_divide() — Returns null when the denominator is 0, instead of throwing a divide-by-zero error.
+- Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
+
+## Enhancements
+- Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
+- With the addition of an on-by-default quote_identifiers flag in the star() macro, you can now disable quoting if necessary. ([#706](https://github.com/dbt-labs/dbt-utils/pull/706))
+
+## Fixes
+- `union()` now includes/excludes columns case-insensitively
+- The `expression_is_true test` doesn’t output * unless storing failures, a cost improvement for BigQuery ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
+- Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers. 
+
+## Under the hood
+- Remove deprecated table argument from `unpivot` ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
+- Delete the deprecated identifier macro ([#672](https://github.com/dbt-labs/dbt-utils/pull/672))
+- Handle deprecations in deduplicate macro ([#673](https://github.com/dbt-labs/dbt-utils/pull/673))
+- Fully remove varargs usage in `surrogate_key` and `safe_add` ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
+- Remove obsolete condition argument from `expression_is_true` ([#699](https://github.com/dbt-labs/dbt-utils/pull/699))
+- Explicitly stating the namespace for cross-db macros so that the dispatch logic works correctly by restoring the dbt. prefix for all migrated cross-db macros ([#701](https://github.com/dbt-labs/dbt-utils/pull/701))
+
+## Contributors:
+- [@CR-Lough] (https://github.com/CR-Lough) (#706) (#696)
+- [@fivetran-catfritz](https://github.com/fivetran-catfritz)
+- [@crowemi](https://github.com/crowemi)
+- [@SimonQuvang](https://github.com/SimonQuvang) (#701)
+- [@christineberger](https://github.com/christineberger) (#624)
+- [@epapineau](https://github.com/epapineau) (#634)
+- [@courentin](https://github.com/courentin) (#651)
+- [@zachoj10](https://github.com/zachoj10) (#692)
+- [@miles170](https://github.com/miles170)
+- [@emilyriederer](https://github.com/emilyriederer)
+# 0.9.5
+## Fixes
+- Stop showing cross-db deprecation warnings for macros who have already been migrated ([#725](https://github.com/dbt-labs/dbt-utils/pull/725))
+
+## 0.9.3 and 0.9.4
+Rolled back due to accidental incompatibilities
+# dbt-utils 0.9.2
+## What's Changed
+* Remove unnecessary generated new lines in `star` by @courentin in https://github.com/dbt-labs/dbt-utils/pull/651
+* fix: Actually suppress `union_relations` source_column_name when passing `none` by @kmclaugh in https://github.com/dbt-labs/dbt-utils/pull/661
+* Make `mutually_exclusive_ranges`' test deterministic by adding `upper_bound_column` to `order by` clause by @sfc-gh-ancoleman in https://github.com/dbt-labs/dbt-utils/pull/660
+* update union_relations to use core string literal macro by @dave-connors-3 in https://github.com/dbt-labs/dbt-utils/pull/665
+* Add where clause example to get_column_values documentation by @arsenkhy in https://github.com/dbt-labs/dbt-utils/pull/623
+
+## New Contributors
+* @courentin made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/651
+* @kmclaugh made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/661
+* @sfc-gh-ancoleman made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/660
+* @dave-connors-3 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/665
+* @arsenkhy made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/623
+
+# dbt-utils 0.9.1
+## Fixes
+- Remove cross-db dbt_utils references by @clausherther in #650
+
+
+# dbt-utils 0.9.0
+## Changed functionality
+* 🚨 (Almost all) cross-db macros are now implemented in dbt Core instead of dbt-utils. A backwards-compatibility layer remains for now and will be removed in dbt utils 1.0 later this year. Completed by @dbeatty10 and @jtcohen6 in https://github.com/dbt-labs/dbt-utils/pull/597, https://github.com/dbt-labs/dbt-utils/pull/586 and https://github.com/dbt-labs/dbt-utils/pull/615
+  * See #487 for further discussion on the backstory
+  * If you are a package maintainer with a dependency on these macros, prepare for their removal by switching to `{{ dbt.some_macro() }}`. Refer to [#package-ecosystem in the Community Slack](https://getdbt.slack.com/archives/CU4MRJ7QB/p1658467817852129) for further assistance
+* Feature: Add option to remove the `source_column_name` on the `union_relations` macro by @christineberger in https://github.com/dbt-labs/dbt-utils/pull/624
+
+## Fixes
+* Use adapter.quote() instead of hardcoded BQ quoting for get_table_types_sql by @alla-bongard in https://github.com/dbt-labs/dbt-utils/pull/636
+
+## Documentation
+* standardize yml indentation under the 'models:' line on the README by @leoebfolsom in https://github.com/dbt-labs/dbt-utils/pull/613
+* Use MADR 3.0.0 for formatting decision records by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/614
+* Docs cleanup by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/620
+* Add not_accepted_values to README ToC by @david-beallor in https://github.com/dbt-labs/dbt-utils/pull/646
+
+# New Contributors
+* @leoebfolsom made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/613
+* @christineberger made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/624
+* @alla-bongard made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/636
+* @david-beallor made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/646
 # dbt-utils v0.8.6
 
 ## New features
@@ -60,7 +145,9 @@ After:
 - Add Snowflake specific implementation of `deduplicate()` ([#543](https://github.com/dbt-labs/dbt-utils/issues/543), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 ## Fixes
+- Fix `union_relations` `source_column_name` none option.
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
+- Make `exclude` case insensitive for `union_relations()` ([#578](https://github.com/dbt-labs/dbt-utils/issues/557), [#587](https://github.com/dbt-labs/dbt-utils/issues/587))
 
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
@@ -83,6 +170,7 @@ After:
 - [@LewisDavies](https://github.com/LewisDavies) (#554)
 - [@epapineau](https://github.com/epapineau) (#583)
 - [@b-per](https://github.com/b-per) (#559)
+- [@dbeatty10](https://github.com/dbeatty10), [@jeremyyeo](https://github.com/jeremyyeo) (#587)
 
 # dbt-utils v0.8.4
 ## Fixes
@@ -214,7 +302,7 @@ After:
 
 ## Under the hood
 
-- Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
+- Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/dbt-labs/dbt-utils/pull/398))
 
 
 # dbt-utils v0.7.0
@@ -262,68 +350,68 @@ If you were relying on the position to match up your optional arguments, this ma
 ```
 
 ## Features
-* Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
-* Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
+* Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/dbt-labs/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/dbt-labs/dbt-utils/pull/349/))
+* Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/dbt-labs/dbt-utils/pull/314))
 * Add `not_null_proportion` generic test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values
 
 ## Under the hood
-* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.
-- Use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` ([#354](https://github.com/fishtown-analytics/dbt-utils/pull/354) from [@swanderz](https://github.com/swanderz))
+* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/dbt-labs/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.
+- Use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` ([#354](https://github.com/dbt-labs/dbt-utils/pull/354) from [@swanderz](https://github.com/swanderz))
 - Make `get_column_values` return the default value passed as a parameter instead of an empty string before compilation ([#304](https://github.com/dbt-labs/dbt-utils/pull/386) from [@jmriego](https://github.com/jmriego)
 
 # dbt-utils v0.6.6
 
 ## Fixes
 
-- make `sequential_values` generic test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/fishtown-analytics/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
+- make `sequential_values` generic test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/dbt-labs/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
 
 # dbt-utils v0.6.5
 ## Features
-* Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
-* Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313](https://github.com/fishtown-analytics/dbt-utils/pull/313/))
-* Add new generic test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
-* Support a new argument, `zero_length_range_allowed` in the `mutually_exclusive_ranges` test ([#307](https://github.com/fishtown-analytics/dbt-utils/pull/307) [@zemekeneng](https://github.com/zemekeneng))
-* Add new generic test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspired by [@hundredwatt](https://github.com/hundredwatt))
-* Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/fishtown-analytics/dbt-utils/pull/333/files) [@seunghanhong](https://github.com/seunghanhong))
-* Add new argument, `unit`, to `haversine_distance` ([#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet))
-* Add new generic test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
+* Add new `accepted_range` test ([#276](https://github.com/dbt-labs/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
+* Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/dbt-labs/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313](https://github.com/dbt-labs/dbt-utils/pull/313/))
+* Add new generic test, `not_accepted_values` ([#284](https://github.com/dbt-labs/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
+* Support a new argument, `zero_length_range_allowed` in the `mutually_exclusive_ranges` test ([#307](https://github.com/dbt-labs/dbt-utils/pull/307) [@zemekeneng](https://github.com/zemekeneng))
+* Add new generic test, `sequential_values` ([#318](https://github.com/dbt-labs/dbt-utils/pull/318), inspired by [@hundredwatt](https://github.com/hundredwatt))
+* Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/dbt-labs/dbt-utils/pull/333/files) [@seunghanhong](https://github.com/seunghanhong))
+* Add new argument, `unit`, to `haversine_distance` ([#340](https://github.com/dbt-labs/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet))
+* Add new generic test, `fewer_rows_than` (code originally in [#221](https://github.com/dbt-labs/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/dbt-labs/dbt-utils/pull/343/))
 
 ## Fixes
-* Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
-* Fix a bug in `get_relation_by_prefix` that happens with Snowflake external tables. Now the macro will retrieve tables that match the prefix which are external tables ([#351](https://github.com/fishtown-analytics/dbt-utils/pull/351))
-* Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334) [@joellabes](https://github.com/joellabes))
+* Handle booleans gracefully in the unpivot macro ([#305](https://github.com/dbt-labs/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
+* Fix a bug in `get_relation_by_prefix` that happens with Snowflake external tables. Now the macro will retrieve tables that match the prefix which are external tables ([#351](https://github.com/dbt-labs/dbt-utils/pull/351))
+* Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/dbt-labs/dbt-utils/pull/334) [@joellabes](https://github.com/joellabes))
 
 ## Under the hood
-* Fix Markdown formatting for hub rendering ([#336](https://github.com/fishtown-analytics/dbt-utils/issues/350) [@coapacetic](https://github.com/coapacetic))
+* Fix Markdown formatting for hub rendering ([#336](https://github.com/dbt-labs/dbt-utils/issues/350) [@coapacetic](https://github.com/coapacetic))
 * Reorder readme and improve docs
 
 # dbt-utils v0.6.4
 
 ### Fixes
-- Fix `insert_by_period` to support `dbt v0.19.0`, with backwards compatibility for earlier versions ([#319](https://github.com/fishtown-analytics/dbt-utils/pull/319), [#320](https://github.com/fishtown-analytics/dbt-utils/pull/320))
+- Fix `insert_by_period` to support `dbt v0.19.0`, with backwards compatibility for earlier versions ([#319](https://github.com/dbt-labs/dbt-utils/pull/319), [#320](https://github.com/dbt-labs/dbt-utils/pull/320))
 
 ### Under the hood
-- Speed up CI via threads, workflows ([#315](https://github.com/fishtown-analytics/dbt-utils/pull/315), [#316](https://github.com/fishtown-analytics/dbt-utils/pull/316))
-- Fix `equality` test when used with ephemeral models + explicit column set ([#321](https://github.com/fishtown-analytics/dbt-utils/pull/321))
-- Fix `get_query_results_as_dict` integration test with consistent ordering ([#322](https://github.com/fishtown-analytics/dbt-utils/pull/322))
-- All macros are now properly dispatched, making it possible for non-core adapters to implement a shim package for dbt-utils ([#312](https://github.com/fishtown-analytics/dbt-utils/pull/312)) Thanks [@chaerinlee1](https://github.com/chaerinlee1) and [@swanderz](https://github.com/swanderz)
-- Small, non-breaking changes to accomodate TSQL (can't group by column number references, no real TRUE/FALSE values, aggregation CTEs need named columns) ([#310](https://github.com/fishtown-analytics/dbt-utils/pull/310)) Thanks [@swanderz](https://github.com/swanderz)
-- Make `get_relations_by_pattern` and `get_relations_by_prefix` more powerful by returning `relation.type` ([#323](https://github.com/fishtown-analytics/dbt-utils/pull/323))
+- Speed up CI via threads, workflows ([#315](https://github.com/dbt-labs/dbt-utils/pull/315), [#316](https://github.com/dbt-labs/dbt-utils/pull/316))
+- Fix `equality` test when used with ephemeral models + explicit column set ([#321](https://github.com/dbt-labs/dbt-utils/pull/321))
+- Fix `get_query_results_as_dict` integration test with consistent ordering ([#322](https://github.com/dbt-labs/dbt-utils/pull/322))
+- All macros are now properly dispatched, making it possible for non-core adapters to implement a shim package for dbt-utils ([#312](https://github.com/dbt-labs/dbt-utils/pull/312)) Thanks [@chaerinlee1](https://github.com/chaerinlee1) and [@swanderz](https://github.com/swanderz)
+- Small, non-breaking changes to accomodate TSQL (can't group by column number references, no real TRUE/FALSE values, aggregation CTEs need named columns) ([#310](https://github.com/dbt-labs/dbt-utils/pull/310)) Thanks [@swanderz](https://github.com/swanderz)
+- Make `get_relations_by_pattern` and `get_relations_by_prefix` more powerful by returning `relation.type` ([#323](https://github.com/dbt-labs/dbt-utils/pull/323))
 
 # dbt-utils v0.6.3
 
-- Bump `require-dbt-version` to `[">=0.18.0", "<0.20.0"]` to support dbt v0.19.0 ([#308](https://github.com/fishtown-analytics/dbt-utils/pull/308), [#309](https://github.com/fishtown-analytics/dbt-utils/pull/309))
+- Bump `require-dbt-version` to `[">=0.18.0", "<0.20.0"]` to support dbt v0.19.0 ([#308](https://github.com/dbt-labs/dbt-utils/pull/308), [#309](https://github.com/dbt-labs/dbt-utils/pull/309))
 
 # dbt-utils v0.6.2
 
 ## Fixes
-- Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/fishtown-analytics/dbt-utils/pull/279))
+- Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/dbt-labs/dbt-utils/pull/279))
 
 
 # dbt-utils v0.6.1
 
 ## Fixes
-- Fix the logic in `get_tables_by_pattern_sql` for matching a schema pattern on BigQuery ([#275](https://github.com/fishtown-analytics/dbt-utils/pull/275/))
+- Fix the logic in `get_tables_by_pattern_sql` for matching a schema pattern on BigQuery ([#275](https://github.com/dbt-labs/dbt-utils/pull/275/))
 
 # dbt-utils v0.6.0
 
@@ -357,18 +445,18 @@ If you were relying on the position to match up your optional arguments, this ma
 
 * Switch usage of `adapter_macro` to `adapter.dispatch`, and define `dbt_utils_dispatch_list`,
 enabling users of community-supported database plugins to add or override macro implementations
-specific to their database ([#267](https://github.com/fishtown-analytics/dbt-utils/pull/267))
+specific to their database ([#267](https://github.com/dbt-labs/dbt-utils/pull/267))
 * Use `add_ephemeral_prefix` instead of hard-coding a string literal, to support
-database adapters that use different prefixes ([#267](https://github.com/fishtown-analytics/dbt-utils/pull/267))
-* Implement a quote_columns argument in the unique_combination_of_columns generic test ([#270](https://github.com/fishtown-analytics/dbt-utils/pull/270) [@JoshuaHuntley](https://github.com/JoshuaHuntley))
+database adapters that use different prefixes ([#267](https://github.com/dbt-labs/dbt-utils/pull/267))
+* Implement a quote_columns argument in the unique_combination_of_columns generic test ([#270](https://github.com/dbt-labs/dbt-utils/pull/270) [@JoshuaHuntley](https://github.com/JoshuaHuntley))
 
 ## Quality of life
-* Remove deprecated macros `get_tables_by_prefix` and `union_tables` ([#268](https://github.com/fishtown-analytics/dbt-utils/pull/268))
-* Remove `get_tables_by_pattern` macro, which is equivalent to the `get_tables_by_pattern_sql` macro (the latter has a more logical name) ([#268](https://github.com/fishtown-analytics/dbt-utils/pull/268))
+* Remove deprecated macros `get_tables_by_prefix` and `union_tables` ([#268](https://github.com/dbt-labs/dbt-utils/pull/268))
+* Remove `get_tables_by_pattern` macro, which is equivalent to the `get_tables_by_pattern_sql` macro (the latter has a more logical name) ([#268](https://github.com/dbt-labs/dbt-utils/pull/268))
 
 # dbt-utils v0.5.1
 
 ## Quality of life
-* Improve release process, and fix tests ([#251](https://github.com/fishtown-analytics/dbt-utils/pull/251))
-* Make deprecation warnings more useful ([#258](https://github.com/fishtown-analytics/dbt-utils/pull/258) [@tayloramurphy](https://github.com/tayloramurphy))
-* Add more docs for `date_spine` ([#265](https://github.com/fishtown-analytics/dbt-utils/pull/265) [@calvingiles](https://github.com/calvingiles))
+* Improve release process, and fix tests ([#251](https://github.com/dbt-labs/dbt-utils/pull/251))
+* Make deprecation warnings more useful ([#258](https://github.com/dbt-labs/dbt-utils/pull/258) [@tayloramurphy](https://github.com/tayloramurphy))
+* Add more docs for `date_spine` ([#265](https://github.com/dbt-labs/dbt-utils/pull/265) [@calvingiles](https://github.com/calvingiles))

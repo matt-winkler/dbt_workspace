@@ -1,5 +1,0 @@
-packages:
-  - git: "git@github.com:matt-winkler/dbt_workspace.git"
-    subdirectory: cross-project-source
-  - package: dbt-labs/dbt_utils
-    version: 0.8.1 

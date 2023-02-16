@@ -1,10 +1,18 @@
-name: 'secret'
+name: 'dbt_workspace'
 version: '1.0.0'
 config-version: 2
 
 profile: default
 
+dispatch:
+  - macro_namespace: dbt
+    search_order:
+      - dbt_workspace
+      - dbt_snowflake_monitoring
+      - dbt
+
 vars:
+  surrogate_key_treat_nulls_as_empty_strings: True
   my_cool_var: '2016-06-01'
   snowflake_meta_src_db: 'snowflake' # override this with -> dbt run --vars "'snowflake_meta_src_db': 'my_snowflake_meta_src_db'"
   game_version_column_mappings:
