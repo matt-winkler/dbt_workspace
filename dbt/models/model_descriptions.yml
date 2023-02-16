@@ -21,3 +21,4 @@ models:
         description: "STRING - column for the first model"
         tests:
           - unique
+          - custom_unique

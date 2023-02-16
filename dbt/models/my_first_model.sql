@@ -1,9 +1,10 @@
 {{
     config(
-        materialized='table'
+        materialized='view'
     )
 }}
 
-select 'hello, world!' as col
+
+select 1 as id, 'foo' as textcolumn
 union all
-select 'hello, world!' as col
+select 1 as id, 'bar' as textcolumn
